@@ -1,5 +1,6 @@
 import express, { Application } from 'express'
 import morgan from 'morgan';
+import mongoose from 'mongoose';
 import cors from 'cors';
 
 import indexRoutes from './routes/indexRoutes';
@@ -25,6 +26,7 @@ class Server{
     routes(): void{
         this.app.use('/',indexRoutes);
         this.app.use('/api/v1/canciones',songsRoutes);
+        module.exports = this.app;
     }
     start(): void{
         this.app.listen(this.app.get('port'), () =>{
@@ -32,6 +34,7 @@ class Server{
         })
     }
 
+    
 }
 
 const server = new Server();

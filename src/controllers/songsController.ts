@@ -5,36 +5,31 @@ class SongsController{
     
     public list (req: Request,res: Response) {
        if (Canciones.length>0){ 
-        res.json({Canciones});
-        res.json({Response: '200'});
+        res.status(200).json({Canciones});
        }
        else{
-        res.json({Response: '404 Not found'});
+        res.status(404).json({Canciones});
        }
 
     }
     public listone (req: Request,res: Response) {
-        let Cancion:String = "";
+        let Cancion;
         for (let i = 0;i<Canciones.length;i++){
             if (Canciones[i].nombre == req.params.id){
-                Cancion += JSON.stringify(Canciones[i]) + ',';
-                
+                Cancion = Canciones[i];                
             }
         }
-        if (Cancion == ""){
-            res.json({Response: '404 Not found'});
+        if (Cancion == null){
+            res.status(404).json({ Response: '404 Not found' });
         }
         else{
-            res.json({Cancion});
-            res.json({Response: '200'});
+            res.status(200).json( Cancion );
         }
         
     }
     public create (req:Request, res:Response){
-        console.log(req.body);
         Canciones.push((req.body));
-        console.log (Canciones);
-        res.json({Response: '201'});
+        res.status(201).json({ Response: '201' });
     }
     public delete (req:Request, res:Response){
         let Canciones2: any[] = []
@@ -49,10 +44,10 @@ class SongsController{
         }
         if (count >0){
             Canciones = Canciones2;
-            res.json({Response: '204'});
+            res.status(204).json({Response: '204'});
         }
         else{
-            res.json({Response: '404 Not Found'});
+            res.status(404).json({Response: '404 Not Found'});
         }
 
     }
@@ -69,13 +64,11 @@ class SongsController{
         }
         if (count >0){
             Canciones = Canciones2;
-            console.log(req.body);
             Canciones.push((req.body));
-            console.log (Canciones);
-            res.json({Response: '204'});
+            res.status(204).json({ Response: '204' });
         }
         else{
-            res.json({Response: '404 Not Found'});
+            res.status(404).json({ Response: '404 Not Found' });
         }
         
     }
