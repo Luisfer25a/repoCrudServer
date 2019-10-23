@@ -25,6 +25,7 @@ class Server{
     routes(): void{
         this.app.use('/',indexRoutes);
         this.app.use('/api/v1/canciones',songsRoutes);
+        module.exports = this.app;
     }
     start(): void{
         this.app.listen(this.app.get('port'), () =>{
@@ -32,6 +33,7 @@ class Server{
         })
     }
 
+    
 }
 
 const server = new Server();

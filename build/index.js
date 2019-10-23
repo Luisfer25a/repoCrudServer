@@ -24,6 +24,7 @@ class Server {
     routes() {
         this.app.use('/', indexRoutes_1.default);
         this.app.use('/api/v1/canciones', songsRoutes_1.default);
+        module.exports = this.app;
     }
     start() {
         this.app.listen(this.app.get('port'), () => {
