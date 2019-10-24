@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc -w",
     "dev": "nodemon build/index.js",
-    "test": "mocha ./tests/songsController.spec.js --exit",
+    "test": "mocha ./tests/songsController.spec.js --timeout 10000 --exit",
     "coverage": "nyc npm run test"
   },
   "keywords": [],

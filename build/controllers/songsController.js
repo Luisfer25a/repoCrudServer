@@ -3,16 +3,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var {Song} = require('../models/song.js');
 let Canciones = [];
 class SongsController {
-    list(req, res) {
+    list (req, res) {
         Song.find((err, docs) => {
-            if (!err) { res.status(200).send(docs); }
-            else { res.status(404).json({ Response: '404 Not found' }); }
+             res.status(200).send(docs); 
+            //else { res.status(404).json({ Response: '404 Not found' });}
         });
     }
     listone(req, res) {
         Song.findById(req.params.id, (err, doc) => {
-            if (!err) { res.status(200).send(doc); }
-            else { res.status(404).json({ Response: '404 Not found' }); }
+            if (!err) { res.status(200).send(doc);}
+            else { res.status(404).json({ Response: '404 Not found' });}
         });
     }
     create(req, res) {
@@ -30,8 +30,8 @@ class SongsController {
     }
     delete(req, res) {
         Song.findByIdAndRemove(req.params.id, (err, doc) => {
-            if (!err) { res.status(204).send(doc); }
-            else { res.status(404).json({ Response: '404 Not Found' });}
+            if (!err) {res.status(204).send(doc); }
+            else {res.status(404).json({ Response: '404 Not Found' });}
         });
     }
     update(req, res) {
@@ -43,8 +43,8 @@ class SongsController {
             duracion: req.body.duracion,
         };
         Song.findByIdAndUpdate(req.params.id, { $set: sng }, { new: true }, (err, doc) => {
-            if (!err) { res.status(204).send(doc); }
-            else { res.status(404).json({ Response: '404 Not Found' }); }
+            if (!err) {res.status(204).send(doc); }
+            else {res.status(404).json({ Response: '404 Not Found' }); }
         });
     }
 }

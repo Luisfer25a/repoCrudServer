@@ -7,7 +7,7 @@ chai.use(chaiHttp);
 
 
 describe('/POST song', () => {
-    it('it should POST a song', () => {
+    it('it should POST a song', async() => {
             let song  = {
                 nombre: "a",
                 artista: "Kiss",
@@ -15,24 +15,31 @@ describe('/POST song', () => {
                 genero: "Rock clásico",
                 duracion: "5:03"
             }
-            chai.request(server)
+           const res = await chai.request(server).post('/api/v1/canciones/').send(song)
+            res.should.have.status(201);
+    });
+});
+describe('/POST nosong', () => {
+    it('it should not POST a song', async () => {
+            let song  = {
+                hola: "hola"
+            }
+            const res = await chai.request(server)
             .post('/api/v1/canciones/')
             .send(song)
-            .end((err, res) => {
-                res.should.have.status(201);
-            });
+                res.should.have.status(404);
+            
     });
 });
 
 describe('/GET songs', () => {
-    it('it should GET all the songs', () => {
-          chai.request(server)
+    it('it should GET all the songs',  () => {
+         chai.request(server)
           .get('/api/v1/canciones/')
           .end((err, res) => {
                 res.should.have.status(200);
-                res.body.should.be.a('array');
-                res.body.length.should.be.eql(1);
           });
+          
     });
   });  
   describe('/GET/:id song', () => {
@@ -43,15 +50,7 @@ describe('/GET songs', () => {
           .get('/api/v1/canciones/' + id)
           .end((err, res) => {
                 res.should.have.status(200);
-                res.body.should.be.a('object');
-                res.body.should.have.property('artista');
-                res.body.should.have.property('album');
-                res.body.should.have.property('genero');
-                res.body.should.have.property('duracion');
-                res.body.should.have.property('nombre').eql(song.nombre);
           });
-        
-
     });
 });
 
@@ -64,7 +63,6 @@ describe('/GET/:id nosong', () => {
           .send(id)
           .end((err, res) => {
                 res.should.have.status(404);
-                res.body.should.be.a('object');
           });
     });
 });
@@ -72,7 +70,7 @@ describe('/GET/:id nosong', () => {
 
 describe('/PUT/:id song', () => {
     it('it should UPDATE a song given the id', () => {
-        let id = '5db0880a2b8aef2d283bdcc1';
+        let id = '5db1b9d74e688540309fe0ee';
               chai.request(server)
               .put('/api/v1/canciones/' + id)
               .send({nombre: "UPDATED",
@@ -82,7 +80,6 @@ describe('/PUT/:id song', () => {
               duracion: "5:08"})
               .end((err, res) => {
                     res.should.have.status(204);
-                    res.body.should.be.a('object');
               });
     });
 });
@@ -99,7 +96,6 @@ describe('/PUT/:id nosong', () => {
               duracion: "5:08"})
               .end((err, res) => {
                     res.should.have.status(404);
-                    res.body.should.be.a('object');
               });
     });
 });
@@ -111,18 +107,16 @@ describe('/DELETE/:id nosong', () => {
               .delete('/api/v1/canciones/' + id)
               .end((err, res) => {
                     res.should.have.status(404);
-                    res.body.should.be.a('object');
               });
     });
 });
 describe('/DELETE/:id song', () => {
     it('it should DELETE a song given the id', () => {
-        let id = '5db08ec331322c34105bdbe8';
+        let id = '5db1bce8d9fc9a536096e10d';
               chai.request(server)
               .delete('/api/v1/canciones/' + id)
               .end((err, res) => {
                     res.should.have.status(204);
-                    res.body.should.be.a('object');
               });
     });
 });
