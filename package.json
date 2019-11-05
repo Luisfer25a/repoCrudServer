@@ -21,7 +21,8 @@
     "mongoose": "^5.7.6",
     "morgan": "^1.9.1",
     "nyc": "^14.1.1",
-    "promise-mysql": "^4.1.1"
+    "promise-mysql": "^4.1.1",
+    "redis": "^2.8.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.6",
