@@ -1,18 +1,46 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var {Song} = require('../models/song.js');
+var redis = require('redis');
+const cliente = redis.createClient(6379, redis);
+
 let Canciones = [];
 class SongsController {
     list (req, res) {
+        var redis_id = 25698;
+        cliente.get(redis_id, (err,docs)=>{
+            if(err) { console.log('Error while retrieving the data from redis!: ' + err); }
+            if(docs){
+                console.log('FOUND DATA IN REDIS');
+                res.status(200).send(JSON.parse(docs));
+            }
+            else{
+                console.log('NOT FOUND IN REDIS');
         Song.find((err, docs) => {
-             res.status(200).send(docs); 
-            //else { res.status(404).json({ Response: '404 Not found' });}
+            cliente.setex(redis_id, 30, JSON.stringify(docs));
+             res.status(200).send(docs);
         });
     }
+    });
+    }
     listone(req, res) {
-        Song.findById(req.params.id, (err, doc) => {
-            if (!err) { res.status(200).send(doc);}
-            else { res.status(404).json({ Response: '404 Not found' });}
+        cliente.get(req.params.id, (err,docs)=>{
+            if(err) { console.log('Error while retrieving the data from redis!: ' + err); }
+            if(docs){
+                console.log('FOUND DATA IN REDIS');
+                res.status(200).send(JSON.parse(docs));
+            }
+            else{
+                console.log('NOT FOUND IN REDIS');
+    
+            Song.findById(req.params.id, (err, docs) => {
+                
+                if (!err) { 
+                    cliente.setex(req.params.id, 30, JSON.stringify(docs));
+                    res.status(200).send(docs);}
+                else { res.status(404).json({ Response: '404 Not found' });}
+            });
+        }
         });
     }
     create(req, res) {
