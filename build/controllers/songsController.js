@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var {Song} = require('../models/song.js');
 var redis = require('redis');
-const cliente = redis.createClient(6379, redis);
+const cliente = redis.createClient('redis://redis:6379');
 
 let Canciones = [];
 class SongsController {
@@ -57,8 +57,9 @@ class SongsController {
         });
     }
     delete(req, res) {
+        console.log(req.params.id);
         Song.findByIdAndRemove(req.params.id, (err, doc) => {
-            if (!err) {res.status(204).send(doc); }
+            if (!err) {res.status(204).send(doc);}
             else {res.status(404).json({ Response: '404 Not Found' });}
         });
     }
